@@ -1,7 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct node {
+/*
+	Author: Nicholas Bonilla
+	Purpose: Creating functions to work between linked lists and strings
+*/
+
+typedef struct node 
+{
 	char letter;
 	struct node* next;
 } node;
@@ -9,15 +15,22 @@ typedef struct node {
 // Returns number of nodes in the linkedList.
 int length(node* head)
 {
-   struct node *tmp = head;
-    int len = 0;
-   while (tmp != NULL)
-   {
-      tmp = tmp->next;
-      len++;
-   }
+	//Creating count variable
+	int num = 0;
 
-   return (len);
+	//Looping through linked list
+	while(head != NULL)
+	{
+		//Increasing count
+		num++;
+
+		//Moving to next node
+		head = head->next;	
+	}
+
+	//returning num
+
+	return num;
 }
 
 // parses the string in the linkedList
@@ -25,6 +38,24 @@ int length(node* head)
 //  then toCString function wil return "abc"
 char* toCString(node* head)
 {
+	//Getting length
+	int num = length(head);
+
+	//Creating string
+	char* str = (char*) malloc(sizeof(char) * (num+1));
+
+	//Filling String
+	for(int i = 0; i < num; i++)
+	{
+		//Getting current char
+		str[i] = head->letter;
+
+		//Moving to next char
+		head = head->next;
+	}
+
+	//Returning string
+	return str;
 }
 
 // inserts character to the linkedlist
@@ -33,11 +64,56 @@ char* toCString(node* head)
 // head -> |a|->|b|->|c|->|x|
 void insertChar(node** pHead, char c)
 {
+	//Making new node
+	node* newNode = (node*) malloc(sizeof(node));
+	newNode->letter=c;
+	
+	if(*pHead == NULL)
+	{
+		*pHead = newNode;
+		return;
+	}	
+
+	    node* temp = *pHead;
+
+   		//Looping through linked list
+		//Creating temp node
+		while(temp->next != NULL) 
+    	{
+        	//Changing temp
+			temp = temp->next;
+    	}
+
+		//Linking nodes
+    	// newNode->next = NULL;
+	
+		temp->next = newNode;
+
+	//Assigning values to new node
+
 }
 
 // deletes all nodes in the linkedList.
 void deleteList(node** pHead)
 {
+	//Creating temp node
+	node* temp = *pHead;
+
+	//Looping through linked list
+    while (temp != NULL) 
+    {
+        //Setting head to next value
+		*pHead = temp->next;
+
+		//Freeing temp
+        free(temp);
+
+		//Updating temp
+        temp = *pHead;
+    }
+	
+	//Making head null
+	*pHead = NULL;
 }
 
 int main(void)
